@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Database Data</title>
+</head>
+<body>
+    <h1>Самые популярные авторы этого месяца</h1>
+    {% for author in authors %}
+        <p>{{ author }}</p>
+    {% endfor %}
+</body>
+</html>

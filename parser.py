@@ -77,7 +77,7 @@ month_num INTEGER,
 ''')
 
 for i in range(2024, 2025):
-    for j in range(1, 3):
+    for j in range(1, 13):
         days = calendar.monthrange(i, j)
         if j < 10:
             j = "0" + str(j)
