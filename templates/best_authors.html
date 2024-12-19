@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Database Data</title>
+    <title>Топ авторов месяца</title>
 </head>
 <body>
-    <h1>Самые популярные авторы этого месяца</h1>
+    <h1>25 самых популярные авторы этого месяца</h1>
     {% for author in authors %}
-        <p>{{ author }}</p>
+       <p><a href="/avtor/{{ author }}">{{ author }}</a></p>
     {% endfor %}
 </body>
 </html>

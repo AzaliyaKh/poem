@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Стихотвория</title>
+</head>
+<body>
+    <h1>Сборник стихотворений</h1>
+    {% for article, poem in poems %}
+        <p>{{ article }}</p>
+        <p>{{ poem }}</p>
+    {% endfor %}
+</body>
+</html>
