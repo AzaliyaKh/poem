@@ -7,7 +7,7 @@ from functools import wraps
 all_authors = {}
 month_authors = {}
 
-def get_poem(author, link):
+def get_poem(author_id, link):
     url = "https://stihi.ru" + link
     response = requests.get(url)
     response.raise_for_status()
@@ -21,9 +21,9 @@ def get_poem(author, link):
     CREATE TABLE IF NOT EXISTS Poems (
     id INTEGER PRIMARY KEY,
     article TEXT NOT NULL,
-    author TEXT NOT NULL,
-    text TEXT NOT NULL
-    FOREIGN KEY (author) REFERENCES Authors (id)
+    author_id TEXT NOT NULL,
+    text TEXT NOT NULL,
+    FOREIGN KEY (author_id) REFERENCES Authors (id)
     )
     ''')
     for row in rows:
@@ -38,7 +38,7 @@ def get_poem(author, link):
             row1 = soup1.find("div", class_='text')
             poem = row1.get_text()
 
-            cursor.execute('INSERT INTO Poems (article, author, text) VALUES (?, ?, ?)', (article, author, poem))
+            cursor.execute('INSERT INTO Poems (article, author_id, text) VALUES (?, ?, ?)', (article, author_id, poem))
         except Exception:
             continue
     #     https://stihi.ru/2024/01/21/7507
@@ -70,7 +70,7 @@ def get_author(url, month_authors):
 
         if author not in all_authors:
             cursor.execute('INSERT INTO Authors (name) VALUES ("author") RETURNING id')
-            author_id = cursor.fetchall()
+            author_id = cursor.fetchone()
             get_poem(author_id, link)
 
             if author not in month_authors:
@@ -79,7 +79,7 @@ def get_author(url, month_authors):
                 month_authors[author_id] += 1
 
     connection.commit()
-    connection.close()
+    # connection.close()
 
 def get_best_month():
     connection = sqlite3.connect("DataBase.db")
@@ -89,13 +89,13 @@ def get_best_month():
     id INTEGER PRIMARY KEY,
     month_num INTEGER,
     author_id TEXT NOT NULL,
-    rang INTEGER NOT NULL
+    rang INTEGER NOT NULL,
     FOREIGN KEY (author_id) REFERENCES Authors (id)
     )
     ''')
 
     for year in range(2024, 2025):
-        for month in range(1, 3):
+        for month in range(1, 2):
             days = calendar.monthrange(year, month)
             if month < 10:
                 month = "0" + str(month)
@@ -106,7 +106,7 @@ def get_best_month():
             for author_id, rang in month_authors.items():
                 cursor.execute('INSERT INTO BestMonth (month_num, author_id, rang) VALUES (?, ?, ?)', (month, author_id, rang))
 
-            month_authors = {}
+            month_authors.clear()
 
     connection.commit()
     connection.close()
@@ -118,3 +118,4 @@ def get_best_month():
 # rows = cursor.fetchall()
 # for row in rows:
 #     print(row)
+get_best_month()
