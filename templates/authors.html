@@ -1,14 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+    h1 {
+        color: DarkSlateGrey;
+        font-family: montserrat;
+        font-size: 300%;
+        display: flex;
+        justify-content: center;
+      }
+    p {
+
+        color: DarkSlateGrey;
+        font-family: montserrat;
+        font-size: 120%;
+        display: flex;
+        justify-content: center;
+    }
+    </style>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
     <title>Стихотвория</title>
 </head>
 <body>
-    <h1>Сборник стихотворений</h1>
-    {% for article, poem in poems %}
-        <p>{{ article }}</p>
-        <p>{{ poem }}</p>
+    <h1 style="color:green;">Сборник стихотворений</h1>
+    <h1>{{ author }}</h1>
+    {% for poem in poems %}
+        <p><b>{{ poem.article }}</b></p>
+        {% for row in poem.text %}
+            <p>{{ row }}</p>
+        {% endfor %}
     {% endfor %}
 </body>
 </html>

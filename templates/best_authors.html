@@ -1,13 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+    h1 {
+        color: DarkSlateGrey;
+        font-family: montserrat;
+        font-size: 300%;
+        display: flex;
+        justify-content: center;
+      }
+    p {
+        color: DarkSlateGrey;
+        font-family: montserrat;
+        font-size: 120%;
+        display: flex;
+        justify-content: center;
+    }
+    a {
+        color: DarkSlateGrey;
+        font-family: montserrat;
+        font-size: 120%;
+        display: flex;
+        justify-content: center;
+        text-decoration: none;
+    }
+    </style>
     <meta charset="UTF-8">
     <title>Топ авторов месяца</title>
 </head>
 <body>
-    <h1>25 самых популярные авторы этого месяца</h1>
+    <h1>25 самых популярных авторов этого месяца</h1>
     {% for author in authors %}
-       <p><a href="/avtor/{{ author }}">{{ author }}</a></p>
+       <p><a href="/{{ author.id }}">{{ author.name }}</a></p>
     {% endfor %}
 </body>
 </html>
