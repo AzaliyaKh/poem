@@ -3,7 +3,6 @@ import sqlite3
 import datetime
 
 app = Flask(__name__)
-# conn = sqlite3.connect('poems_base.db')
 
 def create_db():
     conn = sqlite3.connect("DataBase.db")
@@ -39,8 +38,7 @@ def create_db():
 def best_authors():
     conn = sqlite3.connect('DataBase.db')
     cur = conn.cursor()
-    # current_month = datetime.datetime.now().month
-    current_month = 1
+    current_month = datetime.datetime.now().month
     cur.execute('''
     SELECT Authors.name, Authors.id
     FROM BestMonth 
@@ -51,7 +49,6 @@ def best_authors():
     rows = cur.fetchall()
 
     authors = []
-
     for row in rows:
         author = {
             'name': row[0],
@@ -64,11 +61,14 @@ def best_authors():
 
 @app.route('/<author_id>')
 def author(author_id):
+    if not author_id.isnumeric():
+        return render_template('authors.html')
+
     conn = sqlite3.connect('DataBase.db')
     cur = conn.cursor()
 
     poems = []
-    cur.execute("SELECT article, text FROM Poems WHERE author_id = ?", [author_id])
+    cur.execute("SELECT article, text FROM Poems WHERE author_id = ?", (author_id,))
     rows = cur.fetchall()
 
     for row in rows:
@@ -79,12 +79,11 @@ def author(author_id):
         }
         poems.append(poem)
 
-    cur.execute("SELECT name FROM Authors WHERE id = ?", [author_id])
+    cur.execute("SELECT name FROM Authors WHERE id = ?", (author_id,))
     author = cur.fetchall()[0][0]
-    conn.close()
 
     return render_template('authors.html', poems=poems, author=author)
 
 if __name__ == "__main__":
-    create_db()  # Создаем базу данных и таблицу при первом запуске
+    create_db()
     app.run(debug=True)
